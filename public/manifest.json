@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "MRKDWN",
+  "name": "A lightweight markdown editor",
   "icons": [
     {
       "src": "favicon.ico",
