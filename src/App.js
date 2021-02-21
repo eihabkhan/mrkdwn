@@ -1,26 +1,40 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, {useState, useEffect} from 'react';
 
-function App() {
+import './App.css';
+import Header from './components/header/Header'
+import Editor from './components/editor/Editor'
+
+export default function App() {
+  const defaultMarkdown = "# MRKDWN EDITOR \n --- \n"
+
+  const md = sessionStorage.getItem("markdown")
+  const [markdown, setMarkdown] = useState(md ? md : defaultMarkdown)
+
+  const handleChange = (e) => {
+    setMarkdown(e.target.value)    
+  }
+  useEffect(() => {
+      sessionStorage.setItem("markdown", markdown)
+  }, [markdown])
+
+  
+  const download = (data) => {
+    var element = document.createElement('a');
+    element.setAttribute('href', 'data:text/markdown;charset=utf-8,' + encodeURIComponent(data));
+    element.setAttribute('download', "markdown");
+
+    element.style.display = 'none';
+    document.body.appendChild(element);
+
+    element.click();
+
+    document.body.removeChild(element);
+}
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="app">
+      <Header onClick={() => markdown && download(markdown)}/>
+      <Editor onChange={handleChange} value={markdown}source={markdown } />     
     </div>
   );
 }
-
-export default App;
